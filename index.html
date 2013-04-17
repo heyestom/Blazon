@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<link href="http://tomhey.es/blazon/shieldicon.ico"i> 
+
+<link href='http://fonts.googleapis.com/css?family=MedievalSharp' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="blazonstyle.css">
+<script type="text/javascript" src="intersection.js"></script>
+<script type="text/javascript" src="blazon.js"></script>
+
+</head>
+
+<body onload="blazon()">
+
+<div id="main">
+
+  <p id="title">Blazon Online</p>
+
+  <div id="top_bar">
+    <div id="menue">
+      <ul>
+        <li> <a href="index.html">Home</a> </li>
+        <li> <a href="About.html">About</a> </li>
+        <li> <a href="Blazon.html">Blazon</a> </li>
+        <li> <a href="Contact.html">Contact</a> </li>
+      </ul>
+    </div>    
+  </div>
+
+  <center>
+  <canvas id="canvas" width="650" height="650">
+  Your browser does not support the HTML5 canvas tag.</canvas>
+  </center>
+
+
+  <p id="demo">Blazon to be parsed:</p>
+
+  <!--<div id="input_string">Vert a bar or</div> -->
+   
+  <div id="input_string">Party Per Bend Per Bend Gules and Argent and Per Bend Azure and Argent  </div>
+
+
+  <!--  <textarea id="input_string" size="100" name="input_string" onkeydown="if (event.keyCode == 13) blazon()"  >vert</textarea> -->
+  </br> 
+  <div id = "blaze_button"><button type="button" onclick="blazon()">BLAZE!</button>
+
+
+
+  <div id="output_text">
+     <!-- <p id="input">input</p> -->
+     <p> English description: </p>
+     <p id="result"></p>
+  </div>
+      
+  <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+      var editor = ace.edit("input_string");
+      editor.setTheme("ace/theme/monokai");
+      //editor.getSession().setMode("ace/mode/plaintext");
+      editor.getSession().setUseWrapMode(true);
+      editor.renderer.setShowGutter(false); 
+      editor.renderer.setShowPrintMargin(false);
+      editor.setHighlightActiveLine(false);
+
+  </script>
+
+</div>
+
+<div id ="credit"> <p>Blazon Online Thrid year projcet.</p> <p>Student: Thomas Heyes</p> <p>Supervisor: Dr. Robert Stevens</p> </div>
+
+<img id="bee" src="bee.gif" alt="abee" width="150" height="150">
+
+
+</body>
+</html> 

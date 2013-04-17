@@ -1,0 +1,24 @@
+Blazon 4.1 
+
+New.
+
+You can now draw partitions onto the shield as much as want as long as they are only per fess and per pale.  Obvioulsy more to come later.
+
+Partitions can be generated correctly as long as winding is consistant.
+
+Several large functions have appeared.  Two of these draw_fess and draw_pale are fairly self explanitary and have very simular functionality whilst both rely upon a third new function, determine_new_fields, which given the current field boundry and the two points on the line of partiton will split the field into the apporpriate number of new smaller fields.
+
+Finally is the new function Clip shild which simply provides a mask in the shape of a shild so that the output looks correct. This opens up options for more than one shaped shield in future releases. 
+
+
+Fixed.
+Some minor bug fixes occoured but nothing of any note.
+
+Changes:
+Proper drawing function implemented which is considerably less hacky.
+
+
+Known bugs:
+Currently it is possible for the winding or filed edges to cause the drawn blazon to be incorrect.  For example, "per pale vert per fess argent and or" should produce a shiled with the left half green and the right half split vertically with the top part coloured silver/white and the lower half coloured gold, however the latter two colours are inverted.
+
+I know what is causing this bug to occour and what is needed is a function that whislt maintaing winding order rotates the newly generated fields so that the top left most point is the first one in the returned data strcture. 

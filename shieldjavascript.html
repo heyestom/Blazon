@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="650" height="650" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+<script type="text/javascript" src="intersection.js"></script>
+<script>
+
+
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+
+
+var points = new Array(new Point2D(25,25), new Point2D(25,625), new Point2D(625,625), new Point2D(625,25));
+
+
+ctx.beginPath();
+
+ctx.moveTo(25,25);
+
+
+for(var x =-300; x <= 300; x++)
+{
+  ctx.lineTo((300+x)+25,625-(x*x)/500);
+}
+
+
+ctx.lineTo(625,25);
+ctx.lineTo(25,25);
+ctx.closePath();
+ctx.stroke();
+ctx.clip(); // Draw it
+
+
+//ctx.beginPath();
+//ctx.moveTo(0,445);
+//ctx.lineTo(700,445);
+//ctx.stroke();
+
+
+ctx.beginPath();
+ctx.moveTo(points[0].x,points[0].y);
+for (var x =1; x < points.length; x++)
+{
+  ctx.lineTo(points[x].x, points[x].y);
+}
+
+ctx.closePath();
+ctx.stroke();
+ctx.fillStyle="#ff0000";
+ctx.fill();
+
+var boundries = draw_pale(points,ctx);
+
+
+ctx.beginPath();
+ctx.moveTo(boundries[1][0].x,boundries[1][0].y);
+for (var x =1; x < points.length; x++)
+{
+  ctx.lineTo(boundries[1][x].x, boundries[1][x].y);
+}
+
+ctx.closePath();
+ctx.stroke();
+ctx.fillStyle="#FFCC00";
+ctx.fill();
+
+/*
+
+var sub_boundries = draw_fess(boundries[1],ctx);
+
+ctx.save();
+
+ctx.beginPath();
+ctx.moveTo(sub_boundries[1][0].x,sub_boundries[1][0].y);
+
+for (var x =1; x < points.length; x++)
+{
+  ctx.lineTo(sub_boundries[1][x].x, sub_boundries[1][x].y);
+}
+
+
+ctx.clip();
+
+ctx.closePath();
+ctx.stroke();
+ctx.fillStyle="#339933";
+ctx.fill();
+
+ctx.restore();
+
+var sub_boundries = draw_fess(boundries[0],ctx);
+
+ctx.beginPath();
+ctx.moveTo(sub_boundries[1][0].x,sub_boundries[1][0].y);
+
+for (var x =1; x < points.length; x++)
+{
+  ctx.lineTo(sub_boundries[1][x].x, sub_boundries[1][x].y);
+}
+
+ctx.closePath();
+ctx.stroke();
+ctx.fillStyle="#0000ff";
+ctx.fill();
+*/
+
+function draw_pale(points,ctx)
+{
+  // find the mid point from the left most to the right most
+
+  var maxx = -1;
+  var minx = 9001;
+  var left_point;
+  var right_point;
+
+  // for all points find the most extreem right and left 
+  for(var x =0; x < points.length; x++)
+  {
+    if(points[x].x < minx)
+    {
+      minx = points[x].x;
+      left_point = points[x];
+    }  
+    if(points[x].x > maxx) 
+    {
+      maxx = points[x].x;
+      right_point = points[x];
+    }  
+  }
+
+  //mid point on y 
+  var midx = maxx - ((maxx - minx)/2);
+
+
+  console.log("maxx" + maxx);
+  console.log("midx " + midx);
+  console.log("minx" + minx);
+
+  ctx.beginPath();
+  ctx.moveTo(midx,0);
+  ctx.lineTo(midx,800);
+  ctx.closePath();
+  ctx.stroke();
+
+
+
+  //from the top left most point determine if the line intersects with any of the other lines
+  var new_fields = determine_new_fields(points,new Array(new Point2D(0,midx), new Point2D(800, midx)), 2);
+
+
+
+  //console.log(new_fields);
+
+  return new_fields;
+}
+
+function draw_fess(points,ctx)
+{
+  // find the mid point from the highest and lowest
+
+  var miny = -1;
+  var maxy = 9001;
+  var high_point;
+  var low_point;
+
+  //because up is down in html5 canvases!!!!
+  //this is going to read like its labling the points upside down
+  for(var x =0; x < points.length; x++)
+  {
+  	if(points[x].y < maxy)
+    {
+      maxy = points[x].y;
+      high_point = points[x];
+    }  
+    if(points[x].y > miny) 
+    {
+      miny = points[x].y;
+      low_point = points[x];
+    }  
+  }
+
+  //mid point on y 
+  var midy = miny - ((miny - maxy)/2);
+
+
+  console.log("maxy" + maxy);
+  console.log("midy " + midy);
+  console.log("miny" + miny);
+
+  ctx.beginPath();
+  ctx.moveTo(0,midy);
+  ctx.lineTo(800,midy);
+  ctx.closePath();
+  ctx.stroke();
+
+
+
+  //from the top left most point determine if the line intersects with any of the other lines
+  var new_fields = determine_new_fields(points,new Array(new Point2D(0,midy), new Point2D(800, midy)), 2);
+
+
+
+  console.log(new_fields);
+
+  return new_fields;
+  // for each new field 
+  // clip before evaluating futher
+
+
+
+}
+
+
+function determine_new_fields(points,division_points,number_of_new_fields){
+
+//  var division_points = new Array(new Point2D(0,325),new Point2D(800,325));
+//  console.log(division_points );
+
+
+  // we know how many new fields are going to be generated form the type of partiton we were given
+
+  //create a 2d array with a row for each new field
+  var new_fields= new Array();
+  for(var x =0; x < number_of_new_fields; x++)
+  {
+    new_fields.push(new Array());
+  }
+
+  console.log(new_fields);
+
+  var current_field_index = 0;
+
+  for(var i =0;i<points.length;i++)
+  {
+    var j = (i+1)%points.length;
+    //console.log(i + "" + j);
+    var intersect = Intersection.intersectLineLine(points[i], points[j], division_points[0], division_points[1]); 
+    console.log(intersect);
+
+    // if there has been an intersect
+    if(intersect.points.length > 0)
+    {
+      // push the current point
+      new_fields[current_field_index].push(points[i]);
+      // push the intersect into the current new boundry
+      new_fields[current_field_index].push(intersect.points[0]);
+      current_field_index++; 
+      current_field_index%=number_of_new_fields;
+      new_fields[current_field_index].push(intersect.points[0]);
+    }
+    else
+    {
+      //add this point to the new field
+      new_fields[current_field_index].push(points[i]);
+
+    }
+  }
+  console.log(new_fields);
+  return new_fields;
+}
+
+
+</script>
+
+</body>
+</html>

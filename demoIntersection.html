@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript" src="intersection.js"></script>
+
+<script>
+
+function Point2D(x,y)
+{
+  this.x=x;
+  this.y=y;
+}
+
+
+
+var points = new Array(new Point2D(25,25), new Point2D(25,625), new Point2D(625,625), new Point2D(625,25));
+console.log(points);
+
+var division = new Array(new Point2D(0,325),new Point2D(800,325));
+console.log(division);
+
+
+// we know how many new fields are going to be generated form the type of partiton we were given
+
+//create a 2d array with a row for each new field
+var new_fields= new Array(new Array() , new Array());
+
+console.log(new_fields);
+
+var current_field_index = 0;
+
+var number_of_new_fields =2;
+
+
+for(var i =0;i<points.length;i++)
+{
+  var j = (i+1)%points.length;
+  //console.log(i + "" + j);
+  var intersect = Intersection.intersectLineLine(points[i], points[j], division[0], division[1]); 
+  console.log(intersect);
+
+  // if there has been an intersect
+  if(intersect.points.length > 0)
+  {
+    // push the current point
+    new_fields[current_field_index].push(points[i]);
+    // push the intersect into the current new boundry
+    new_fields[current_field_index].push(intersect.points[0]);
+    current_field_index++; 
+    current_field_index%=number_of_new_fields;
+    new_fields[current_field_index].push(intersect.points[0]);
+  }
+  else
+  {
+    //add this point to the new field
+    new_fields[current_field_index].push(points[i]);
+
+  }
+
+
+}
+  
+  console.log(new_fields);
+/*
+
+var a1 = new Point2D(10,10);
+var a2 = new Point2D(30,10);
+var b1 = new Point2D(20,20);
+var b2 = new Point2D(20,0);
+
+var result = Intersection.intersectLineLine(a1, a2, b1, b2);
+
+console.log(result);
+
+*/
+
+
+
+
+/*
+var a1 = new Point2D(10,10);
+var a2 = new Point2D(30,10);
+var b1 = new Point2D(20,20);
+var b2 = new Point2D(20,19);
+
+var result = Intersection.intersectLineLine(a1, a2, b1, b2);
+
+console.log(result);
+*/
+
+
+</script>
+
+
+</body>
+</html>

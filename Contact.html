@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<link href='http://fonts.googleapis.com/css?family=MedievalSharp' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="blazonstyle.css">
+<script type="text/javascript" src="intersection.js"></script>
+<script type="text/javascript" src="blazon.js"></script>
+
+</head>
+
+<body onload="blazon()">
+
+<div id="main">
+
+  <p id="title">BlazonLion</p>
+
+  <div id="top_bar">
+    <ul>
+      <div id="left_menue"> <li> <a href="index.html">Home</a> </li> </div>
+      <li> <a href="About.html">Blazon</a> </li>
+      <li> <a href="Contact.html">Contact</a> </li>
+    </ul>
+  </div>
+
+  <p id="demo">Blazon to be parsed:</p>
+
+
+  <div id="input_string" onkeydown="if (event.keyCode == 13) blazon()" > Party Per Bend Party Per Bend Gules and Argent and Party Per Bend Azure and Argent  </div>
+
+
+  <!--  <textarea id="input_string" size="100" name="input_string" onkeydown="if (event.keyCode == 13) blazon()"  >vert</textarea> -->
+  </br> 
+  <button type="button" onclick="blazon()">BLAZE!</button>
+
+  <center>
+  <canvas id="canvas" width="650" height="650">
+  Your browser does not support the HTML5 canvas tag.</canvas>
+  </center>
+
+  <p id="input">input</p>
+  <p id="result">result  </p>
+
+      
+  <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+      var editor = ace.edit("input_string");
+      editor.setTheme("ace/theme/monokai");
+      //editor.getSession().setMode("ace/mode/plaintext");
+      editor.getSession().setUseWrapMode(true);
+      editor.renderer.setShowGutter(false); 
+      editor.renderer.setShowPrintMargin(false);
+  </script>
+
+</div>
+
+</body>
+</html> 
